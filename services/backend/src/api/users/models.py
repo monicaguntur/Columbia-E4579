@@ -23,7 +23,6 @@ class User(BaseModel):
     password = db.Column(db.String(255), nullable=False)
     active = db.Column(db.Boolean(), default=True, nullable=False)
     created_date = db.Column(db.DateTime, default=func.now(), nullable=False)
-    candidate_categories = db.Column(db.ARRAY(db.String(100)), default=[], nullable=False)
 
     # relationship
     authored_content = relationship("Content", back_populates="author", uselist=True)

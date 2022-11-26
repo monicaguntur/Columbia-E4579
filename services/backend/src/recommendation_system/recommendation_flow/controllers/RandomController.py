@@ -1,6 +1,11 @@
-from src.recommendation_system.recommendation_flow.candidate_generators.RandomGenerator import (
-    RandomGenerator,
+from src.recommendation_system.recommendation_flow.candidate_generators.CFGenerator import (
+    CFGenerator,
 )
+
+from src.recommendation_system.recommendation_flow.candidate_generators.RandomGenerator import (
+    RandomGenerator
+)
+
 from src.recommendation_system.recommendation_flow.controllers.AbstractController import (
     AbstractController,
 )
@@ -14,7 +19,6 @@ from src.recommendation_system.recommendation_flow.ranking.RandomRanker import (
     RandomRanker,
 )
 
-
 class RandomController(AbstractController):
     def get_content_ids(self, user_id, limit, offset, seed, starting_point):
         if seed <= 1:  # MySql seeds should be [0, # of rows] not [0, 1]
@@ -22,9 +26,16 @@ class RandomController(AbstractController):
         candidates_limit = (
             limit * 10 * 10
         )  # 10% gets filtered out and take top 10% of rank
-        candidates, scores = RandomGenerator().get_content_ids(
-            user_id, candidates_limit, offset, seed, starting_point
-        )
+
+        if user_id == 0:
+            candidates, scores = RandomGenerator().get_content_ids(
+                user_id, candidates_limit, offset, seed, starting_point
+            )
+        else:
+            candidates, scores = CFGenerator().get_content_ids(
+                user_id, candidates_limit, offset, seed, starting_point
+            )
+
         filtered_candidates = RandomFilter().filter_ids(
             candidates, seed, starting_point
         )

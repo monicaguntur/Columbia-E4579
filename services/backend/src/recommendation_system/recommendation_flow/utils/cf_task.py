@@ -8,6 +8,7 @@ from src.api.users.crud import *
 from src.api.content.models import Content, GeneratedContentMetadata
 from src.api.engagement.models import Engagement, EngagementType
 from src import create_app
+from src import db
 
 from sqlalchemy.sql import select
 from sqlalchemy.orm import joinedload, load_only
@@ -16,6 +17,8 @@ from scipy.sparse import dok_matrix
 from sklearn.decomposition import NMF
 from sklearn.preprocessing import normalize
 from sklearn.neighbors import NearestNeighbors
+
+import json
 
 def generate_cf_embedding():
     # get all users
@@ -99,6 +102,16 @@ def generate_cf_embedding():
         for idx in index_list:
             styles.append(style_array[idx])
         user_styles.append(styles)
+
+    # create table to store prefs
+    with db.engine.connect() as con:
+        con.execute("CREATE TABLE IF NOT EXISTS user_prefs(id int, prefs JSON, primary key (id))")
+
+    # insert the entries
+    with db.engine.connect() as con:
+        for idx, user in enumerate(users):
+            prefs = json.dumps(user_styles[idx])
+            con.execute(f"REPLACE INTO user_prefs (id, prefs) VALUES ({user.id},'{prefs}')")
 
 if __name__ == '__main__':
 
