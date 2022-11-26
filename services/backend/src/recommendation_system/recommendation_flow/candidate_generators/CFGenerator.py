@@ -13,11 +13,18 @@ class CFGenerator(AbstractGenerator):
         print(user_id)
         with db.engine.connect() as con:
             prefs = con.execute(f'SELECT prefs from user_prefs where id = {user_id}').all()[0][0]
+
+            # return empty if no prefs
+            if prefs == "":
+                return [], None
+
+            # retrieve all pictures from preference categories
             query = 'SELECT content.id as id ' \
                     'from content left outer join ' \
                     'generated_content_metadata ' \
                     'on content.id = generated_content_metadata.content_id ' \
                     f'where generated_content_metadata.artist_style IN({prefs[1:-1]});'
+
             ids = list(map(lambda x: x[0], con.execute(query).all()))
 
             return ids, None
