@@ -10,7 +10,6 @@ from .RandomGenerator import RandomGenerator
 
 class CFGenerator(AbstractGenerator):
     def get_content_ids(self, user_id, limit, offset, _seed, starting_point):
-        print(user_id)
         with db.engine.connect() as con:
             prefs = con.execute(f'SELECT prefs from user_prefs where id = {user_id}').all()[0][0]
 

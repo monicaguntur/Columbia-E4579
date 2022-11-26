@@ -30,6 +30,13 @@ def create_app(script_info=None):
         instantiate(0.9)
         print("INSTANTIATED")
 
+        from src.recommendation_system.recommendation_flow.utils.cf_task import (
+                generate_cf_embedding
+        )
+
+        print("generating cf embedding")
+        generate_cf_embedding()
+
     app.before_first_request(f)
     app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_port=1)
 
