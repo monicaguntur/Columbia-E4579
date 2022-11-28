@@ -6,7 +6,7 @@ from src.recommendation_system.recommendation_flow.controllers import (
     EngagementTimeController,
     RandomController,
     StaticController,
-    ExampleController
+    UserPreferenceController
 )
 
 
@@ -14,7 +14,7 @@ class ControllerEnum(Enum):
     RANDOM = RandomController
     STATIC = StaticController
     ENGAGEMENT_TIME = EngagementTimeController
-    EXAMPLE = ExampleController
+    USER_PREFERENCE = UserPreferenceController
 
     def human_string(self):
         return str(self).split(".")[1]
@@ -44,7 +44,7 @@ def get_content_data(controller, user_id, limit, offset, seed, starting_point=No
         ControllerEnum.RANDOM,
         ControllerEnum.STATIC,
         ControllerEnum.ENGAGEMENT_TIME,
-        ControllerEnum.EXAMPLE
+        ControllerEnum.USER_PREFERENCE
     ]:
         content_ids = controller.value().get_content_ids(
             user_id, limit, offset, seed, starting_point
