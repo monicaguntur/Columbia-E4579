@@ -1,5 +1,5 @@
-from src.recommendation_system.recommendation_flow.candidate_generators.CFGenerator import (
-    CFGenerator,
+from src.recommendation_system.recommendation_flow.candidate_generators.UserPreferenceGenerator import (
+    UserPreferenceGenerator,
 )
 
 from src.recommendation_system.recommendation_flow.candidate_generators.RandomGenerator import (
@@ -32,7 +32,7 @@ class RandomController(AbstractController):
                 user_id, candidates_limit, offset, seed, starting_point
             )
         else:
-            candidates, scores = CFGenerator().get_content_ids(
+            candidates, scores = UserPreferenceGenerator().get_content_ids(
                 user_id, candidates_limit, offset, seed, starting_point
             )
 
