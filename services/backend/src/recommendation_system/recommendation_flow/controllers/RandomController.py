@@ -2,6 +2,10 @@ from src.recommendation_system.recommendation_flow.candidate_generators.CFGenera
     CFGenerator,
 )
 
+from src.recommendation_system.recommendation_flow.candidate_generators.PopularCategoriesGenerator import (
+    PopularCategoriesGenerator,
+)
+
 from src.recommendation_system.recommendation_flow.candidate_generators.RandomGenerator import (
     RandomGenerator
 )
@@ -32,9 +36,13 @@ class RandomController(AbstractController):
                 user_id, candidates_limit, offset, seed, starting_point
             )
         else:
-            candidates, scores = CFGenerator().get_content_ids(
+            candidates_1, scores = CFGenerator().get_content_ids(
                 user_id, candidates_limit, offset, seed, starting_point
             )
+            candidates_2, scores = PopularCategoriesGenerator().get_content_ids()
+
+            # union all candidates -> remove duplicates
+            candidates = list(set(candidates_1 + candidates_2))
 
         filtered_candidates = RandomFilter().filter_ids(
             candidates, seed, starting_point
