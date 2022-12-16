@@ -7,8 +7,8 @@ from src.recommendation_system.recommendation_flow.controllers.AbstractControlle
 from src.recommendation_system.recommendation_flow.filtering.RandomFilter import (
     RandomFilter,
 )
-from src.recommendation_system.recommendation_flow.model_prediction.RandomModel import (
-    RandomModel,
+from src.recommendation_system.recommendation_flow.model_prediction.RuleBasedModel import (
+    RuleBasedModel,
 )
 from src.recommendation_system.recommendation_flow.ranking.RandomRanker import (
     RandomRanker,
@@ -26,7 +26,7 @@ class EngagementTimeController(AbstractController):
         filtered_candidates = RandomFilter().filter_ids(
             candidates, seed, starting_point
         )
-        predictions = RandomModel().predict_probabilities(
+        predictions = RuleBasedModel().predict_probabilities(
             filtered_candidates,
             user_id,
             seed=seed,
