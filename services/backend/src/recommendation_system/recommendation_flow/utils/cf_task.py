@@ -92,7 +92,7 @@ def generate_cf_embedding():
     V = nmf.components_
 
     # compute nearest neighbor for each user
-    nn = NearestNeighbors(n_neighbors = 5, algorithm='ball_tree').fit(V.T)
+    nn = NearestNeighbors(n_neighbors = 50, algorithm='ball_tree').fit(V.T)
     dists, indices = nn.kneighbors(U)
 
     # map back to categories for each user

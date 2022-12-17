@@ -9,7 +9,7 @@ class RuleBasedModel(AbstractModel):
         # first get the style
         style_query = 'SELECT artist_style '\
                 'FROM generated_content_metadata '\
-                f'WHERE id={content_id};'
+                f'WHERE content_id={content_id};'
         style = con.execute(style_query).one()[0]
 
         liked_same_style_query = 'SELECT COUNT(engagement.content_id) '\
@@ -45,9 +45,8 @@ class RuleBasedModel(AbstractModel):
     def calculate_score(self, content_id, user_id):
         score = 0
         with db.engine.connect() as con:
-            score += int(self.liked_same_style(con, user_id, content_id))
+            score += int(self.liked_same_style(con, content_id, user_id))
             score += int(self.popularity_score(con, content_id))
-        
         return score
 
     def predict_probabilities(self, content_ids, user_id, seed=None, **kwargs):
