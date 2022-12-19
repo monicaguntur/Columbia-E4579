@@ -6,6 +6,10 @@ from src.recommendation_system.recommendation_flow.candidate_generators.CFGenera
     CFGenerator
 )
 
+from src.recommendation_system.recommendation_flow.candidate_generators.PopularCategoryGenerator import (
+    PopularCategoryGenerator
+)
+
 from src.recommendation_system.recommendation_flow.candidate_generators.RandomGenerator import (
     RandomGenerator
 )
@@ -49,13 +53,16 @@ class RandomController(AbstractController):
                 user_id, candidates_limit, offset, seed, starting_point
             )
 
-            print(f"num candidates: {len(candidates_1)}")
-            print(f"num candidates: {len(candidates_2)}")
+            candidates_3, scores_3 = PopularCategoryGenerator().get_content_ids(
+                user_id, candidates_limit, offset, seed, starting_point
+            )
 
-            candidates = candidates_1 + candidates_2
+            print(f"num candidates (user preference): {len(candidates_1)}")
+            print(f"num candidates (cf) : {len(candidates_2)}")
+            print(f"num candidates (popular) : {len(candidates_3)}")
+
+            candidates = candidates_1 + candidates_2 + candidates_3
             scores = None
-
-
 
         filtered_candidates = RandomFilter().filter_ids(
             candidates, seed, starting_point
