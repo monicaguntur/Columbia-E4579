@@ -61,7 +61,7 @@ class PopularCategoryGenerator(AbstractGenerator):
 
                             ) temp4 on temp4.content_id = engagement.content_id
                             where
-                                engagement.engagement_type = 'Like';
+                                engagement.engagement_type = 'Like' and engagement.engagement_value != -1;
                             """
 
                 results = con.execute(query).all()
