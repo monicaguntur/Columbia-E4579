@@ -30,8 +30,8 @@ from src.recommendation_system.recommendation_flow.model_prediction.RuleBasedMod
     RuleBasedModel,
 )
 
-from src.recommendation_system.recommendation_flow.ranking.RandomRanker import (
-    RandomRanker,
+from src.recommendation_system.recommendation_flow.ranking.RuleBasedRanker2 import (
+    RuleBasedRanker,
 )
 
 class RandomController(AbstractController):
@@ -85,6 +85,6 @@ class RandomController(AbstractController):
             else {},
         )
 
-        rank = RandomRanker().rank_ids(limit, predictions, seed, starting_point)
+        rank = RuleBasedRanker().rank_ids(limit, predictions, seed, starting_point)
 
         return rank
