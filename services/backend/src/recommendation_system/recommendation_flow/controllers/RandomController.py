@@ -22,6 +22,10 @@ from src.recommendation_system.recommendation_flow.filtering.RandomFilter import
     RandomFilter,
 )
 
+from src.recommendation_system.recommendation_flow.filtering.QualityFilter import (
+    QualityFilter
+)
+
 from src.recommendation_system.recommendation_flow.model_prediction.RandomModel import (
     RandomModel
 )
@@ -62,11 +66,12 @@ class RandomController(AbstractController):
             print(f"num candidates (popular) : {len(candidates_3)}")
 
             candidates = candidates_1 + candidates_2 + candidates_3
-            scores = None
 
-        filtered_candidates = RandomFilter().filter_ids(
-            candidates, seed, starting_point
+        filtered_candidates_scores = QualityFilter().filter_ids(
+            candidates, seed, starting_point, user_id
         )
+
+        filtered_candidates = filtered_candidates_scores.keys()
 
         if user_id == 0:
             predictor_model = RandomModel()
@@ -78,11 +83,9 @@ class RandomController(AbstractController):
             user_id,
             seed=seed,
             scores={
-                content_id: {"score": score}
-                for content_id, score in zip(candidates, scores)
+                content_id: {"score": filtered_candidates_scores[content_id]}
+                for content_id in filtered_candidates_scores
             }
-            if scores is not None
-            else {},
         )
 
         rank = RuleBasedRanker().rank_ids(limit, predictions, seed, starting_point)

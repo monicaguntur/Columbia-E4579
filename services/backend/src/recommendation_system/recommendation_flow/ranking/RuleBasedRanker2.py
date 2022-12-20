@@ -37,15 +37,11 @@ class RuleBasedRanker(AbstractRanker):
         top_score2k = heapq.nlargest(score2k, prediction2, key=zero_if_none) # sort by score
         top_score1k = heapq.nlargest(score1k, prediction1, key=zero_if_none)
         top_score0k = heapq.nlargest(score0k, prediction0, key=zero_if_none)
-        
         top_score2k_ids = list(map(lambda x: x["content_id"], top_score2k))
         top_score1k_ids = list(map(lambda x: x["content_id"], top_score1k))
         top_score0k_ids = list(map(lambda x: x["content_id"], top_score0k))
-        
+
         #add selected img together 
         top_k_ids=top_score2k_ids+top_score1k_ids+top_score0k_ids
         
-        if seed:
-            random.seed(seed)
-        
-        return random.sample(top_k_ids, len(top_k_ids))  # shuffle
+        return top_k_ids
