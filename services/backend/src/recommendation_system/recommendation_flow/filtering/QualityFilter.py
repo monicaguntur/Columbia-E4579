@@ -124,7 +124,7 @@ class QualityFilter(AbstractFilter):
                         f"{content_isin_string}").all()
 
             scores_sorted = list(sorted(scores, key = lambda x : float(x[1])))
-            scores_filtered = scores_sorted[:int(0.99*len(scores_sorted))]
+            scores_filtered = scores_sorted[:int(0.90*len(scores_sorted))]
 
             return dict(scores_filtered)
 
