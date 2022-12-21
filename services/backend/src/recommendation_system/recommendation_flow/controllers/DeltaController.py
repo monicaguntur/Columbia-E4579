@@ -38,7 +38,7 @@ from src.recommendation_system.recommendation_flow.ranking.RuleBasedRanker2 impo
     RuleBasedRanker,
 )
 
-class RandomController(AbstractController):
+class DeltaController(AbstractController):
     def get_content_ids(self, user_id, limit, offset, seed, starting_point):
         candidates_limit = (
             limit * 10 * 10
