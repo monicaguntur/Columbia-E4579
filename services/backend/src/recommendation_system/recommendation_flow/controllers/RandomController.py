@@ -44,6 +44,7 @@ class RandomController(AbstractController):
             limit * 10 * 10
         )
 
+        print(f"CONTROLLER: user id: {user_id}")
         if user_id == 0:
             candidates, scores = RandomGenerator().get_content_ids(
                 user_id, candidates_limit, offset, seed, starting_point
@@ -73,12 +74,13 @@ class RandomController(AbstractController):
 
         filtered_candidates = filtered_candidates_scores.keys()
 
+
         if user_id == 0:
             predictor_model = RandomModel()
         else:
             predictor_model = RuleBasedModel()
 
-        predictions = predictor_model.predict_probabilities(
+        predictions = RuleBasedModel().predict_probabilities(
             filtered_candidates,
             user_id,
             seed=seed,
@@ -88,6 +90,10 @@ class RandomController(AbstractController):
             }
         )
 
+        print("CONTROLLER: Prediction done")
+
         rank = RuleBasedRanker().rank_ids(limit, predictions, seed, starting_point)
+
+        print("CONTROLLER: Ranking done")
 
         return rank
